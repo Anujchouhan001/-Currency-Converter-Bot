@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>💎 Currency Converter</title>
+  <script src="https://cdn.tailwindcss.com"></script> <!-- Tailwind CSS -->
+  <script>
+    const currencies = [
+      "USD", "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN",
+      "BAM", "BBD", "BDT", "BGN", "BHD", "BIF", "BMD", "BND", "BOB", "BRL", "BSD",
+      "BTN", "BWP", "BYN", "BZD", "CAD", "CDF", "CHF", "CLP", "CNY", "COP", "CRC",
+      "CUP", "CVE", "CZK", "DJF", "DKK", "DOP", "DZD", "EGP", "ERN", "ETB", "EUR",
+      "FJD", "FKP", "FOK", "GBP", "GEL", "GGP", "GHS", "GIP", "GMD", "GNF", "GTQ",
+      "GYD", "HKD", "HNL", "HRK", "HTG", "HUF", "IDR", "ILS", "IMP", "INR", "IQD",
+      "IRR", "ISK", "JEP", "JMD", "JOD", "JPY", "KES", "KGS", "KHR", "KID", "KMF",
+      "KRW", "KWD", "KYD", "KZT", "LAK", "LBP", "LKR", "LRD", "LSL", "LYD", "MAD",
+      "MDL", "MGA", "MKD", "MMK", "MNT", "MOP", "MRU", "MUR", "MVR", "MWK", "MXN",
+      "MYR", "MZN", "NAD", "NGN", "NIO", "NOK", "NPR", "NZD", "OMR", "PAB", "PEN",
+      "PGK", "PHP", "PKR", "PLN", "PYG", "QAR", "RON", "RSD", "RUB", "RWF", "SAR",
+      "SBD", "SCR", "SDG", "SEK", "SGD", "SHP", "SLE", "SLL", "SOS", "SRD", "SSP",
+      "STN", "SYP", "SZL", "THB", "TJS", "TMT", "TND", "TOP", "TRY", "TTD", "TVD",
+      "TWD", "TZS", "UAH", "UGX", "UYU", "UZS", "VES", "VND", "VUV", "WST", "XAF",
+      "XCD", "XCG", "XDR", "XOF", "XPF", "YER", "ZAR", "ZMW", "ZWL"
+    ];
+
+    function populateCurrencyOptions() {
+      const fromSelect = document.getElementById('from_currency');
+      const toSelect = document.getElementById('to_currency');
+
+      currencies.forEach(currency => {
+        const option1 = document.createElement('option');
+        option1.value = currency;
+        option1.textContent = currency;
+        fromSelect.appendChild(option1);
+
+        const option2 = document.createElement('option');
+        option2.value = currency;
+        option2.textContent = currency;
+        toSelect.appendChild(option2);
+      });
+    }
+
+    async function convertCurrency() {
+      const amount = parseFloat(document.getElementById('amount').value);
+      const fromCurrency = document.getElementById('from_currency').value;
+      const toCurrency = document.getElementById('to_currency').value;
+
+      if (isNaN(amount) || fromCurrency === "" || toCurrency === "") {
+        document.getElementById('result').innerText = "❌ Please fill all fields correctly.";
+        return;
+      }
+
+      const apiKey = '14878b3a97fb881333bae8b4';
+      const url = `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${fromCurrency}/${toCurrency}/${amount}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.result === "success") {
+          document.getElementById('result').innerText = `✅ Converted Amount: ${data.conversion_result} ${toCurrency}`;
+        } else {
+          document.getElementById('result').innerText = "❌ Failed to fetch conversion rate.";
+        }
+      } catch (error) {
+        document.getElementById('result').innerText = "❌ Error fetching data.";
+        console.error(error);
+      }
+    }
+
+    window.onload = populateCurrencyOptions;
+  </script>
+</head>
+
+<body 
+  class="relative min-h-screen flex items-center justify-center p-6 overflow-hidden"
+  style="background: url('https://cdn.pixabay.com/animation/2023/11/04/05/26/05-26-46-736_512.gif') no-repeat center center / cover;"
+  
+>
+
+  <!-- Light Blue Overlay -->
+  <div class="absolute inset-0 bg-blue-100 opacity-60 z-0"></div>
+
+  <!-- Content -->
+  <div class="relative z-10 bg-blue-50 p-10 rounded-3xl shadow-2xl w-full max-w-2xl border-2 border-blue-300 hover:shadow-blue-400 hover:scale-105 transition-all duration-500">
+    <h1 class="text-5xl font-bold text-blue-600 text-center mb-10 drop-shadow-lg animate-pulse">💎 Currency Converter</h1>
+
+    <form onsubmit="event.preventDefault(); convertCurrency();" class="space-y-6">
+      <div>
+        <label class="block text-blue-700 font-semibold mb-2">From Currency:</label>
+        <select id="from_currency" class="w-full px-4 py-3 border border-blue-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white hover:bg-blue-100 transition duration-300">
+          <option value="">Select Currency</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-blue-700 font-semibold mb-2">To Currency:</label>
+        <select id="to_currency" class="w-full px-4 py-3 border border-blue-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white hover:bg-blue-100 transition duration-300">
+          <option value="">Select Currency</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-blue-700 font-semibold mb-2">Amount:</label>
+        <input type="number" id="amount" step="any" placeholder="Enter amount" class="w-full px-4 py-3 border border-blue-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white hover:bg-blue-100 transition duration-300" />
+      </div>
+
+      <div class="flex justify-center">
+        <input type="submit" value="Convert" class="bg-blue-500 text-white px-10 py-3 rounded-full hover:bg-blue-600 hover:scale-110 transition transform duration-300 shadow-md hover:shadow-xl" />
+      </div>
+    </form>
+
+    <h2 id="result" class="text-center mt-8 text-2xl font-semibold text-blue-800"></h2>
+  </div>
+</body>
+</html>
