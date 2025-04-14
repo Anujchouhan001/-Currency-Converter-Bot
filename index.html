@@ -2,8 +2,271 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>💎 Currency Converter</title>
-  <script src="https://cdn.tailwindcss.com"></script> <!-- Tailwind CSS -->
+  <title>Currency Converter</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: linear-gradient(270deg, #a1c4fd, #c2e9fb, #fbc2eb, #a6c1ee);
+      background-size: 800% 800%;
+      animation: gradientAnimation 10s ease infinite;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .half-curve {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50vh;
+      background: #f3e5f5; /* Light purple */
+      clip-path: ellipse(150% 100% at 50% 0%);
+      z-index: -1;
+    }
+
+    @keyframes gradientAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .shadow-blue-400 {
+      box-shadow: 0 4px 20px rgba(37, 99, 235, 0.5);
+    }
+    .hover\:shadow-blue-400:hover {
+      box-shadow: 0 4px 20px rgba(37, 99, 235, 0.5);
+    }
+    .hover\:scale-105:hover {
+      transform: scale(1.05);
+    }
+    .animate-pulse {
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 5px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+    html, body {
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    header {
+      background-color: #6a1b9a; 
+    }
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #currencyDetails {
+      animation: fadeInUp 1s ease-in-out;
+    }
+
+    nav ul li a {
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #ffeb3b;
+      transform: scale(1.1); 
+      text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3); 
+    }
+  </style>
+</head>
+
+<body class="flex flex-col min-h-screen">
+  <div class="half-curve"></div>
+
+  <header class="fixed top-0 left-0 w-full text-white shadow-md z-50">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      <h1 class="text-3xl font-bold">CC</h1>
+      <nav>
+        <ul class="flex space-x-6">
+          <li><a href="#home" class="hover:underline text-lg font-medium">Home</a></li>
+          <li><a href="#about" class="hover:underline text-lg font-medium">About Us</a></li>
+          <li><a href="#currencyDetails" class="hover:underline text-lg font-medium">Live</a></li>
+          <li><a href="#converter" class="hover:underline text-lg font-medium">Converter</a></li>
+          <li><a href="#help" class="hover:underline text-lg font-medium">Help</a></li>
+          <li><a href="#login" class="hover:underline text-lg font-medium">Login</a></li>
+          <li><a href="#register" class="hover:underline text-lg font-medium">Register</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="home" class="flex-grow pt-24 pb-10 px-4">
+
+    <section class="text-center">
+      <h1 class="text-5xl font-extrabold text-blue-700 mb-4">CC Currency Converter</h1>
+      <p class="text-xl text-gray-700">Check live foreign currency exchange rates</p>
+    </section>
+
+    <section id="converter" class="mt-12 flex justify-center">
+      <div class="bg-blue-50 p-8 rounded-3x2 shadow-2xl w-full max-w-2xl border-8 border-blue-300 hover:shadow-blue-400 hover:scale-105 transition-all duration-500">
+        <h2 class="text-4xl font-bold text-center text-blue-600 mb-8 animate-pulse">Currency Converter</h2>
+        <form onsubmit="event.preventDefault(); convertCurrency();" class="space-y-6">
+          <div>
+            <label class="block text-blue-700 font-semibold mb-2">From Currency:</label>
+            <select id="from_currency" class="w-full px-4 py-2 border rounded-xl">
+            </select>
+          </div>
+          <div>
+            <label class="block text-blue-700 font-semibold mb-2">To Currency:</label>
+            <select id="to_currency" class="w-full px-4 py-2 border rounded-xl">
+            </select>
+          </div>
+          <div>
+            <label class="block text-blue-700 font-semibold mb-2">Amount:</label>
+            <input id="amount" type="number" placeholder="Enter amount" class="w-full px-4 py-2 border rounded-xl" />
+          </div>
+          <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition">Convert</button>
+        </form>
+        <p id="result" class="text-center text-xl mt-6 font-semibold"></p>
+      </div>
+    </section>
+
+    <section id="about" class="mt-20 text-center bg-gradient-to-r from-purple-50 via-purple-100 to-purple-50 px-6 py-10 rounded-xl shadow-lg">
+      <h2 class="text-4xl font-bold text-purple-700 mb-6">About Us</h2>
+      <p class="max-w-3xl mx-auto text-gray-700 text-lg leading-relaxed">
+        Welcome to <span class="font-bold text-purple-600">CC Currency Converter</span>, your trusted platform for real-time foreign exchange rates. 
+        Our mission is to empower individuals and businesses with accurate and up-to-date currency data.
+      </p>
+      <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
+          <h3 class="text-2xl font-bold text-purple-600 mb-4">Real-Time Rates</h3>
+          <p class="text-gray-600">Access live exchange rates for over 100 currencies, ensuring you stay informed and make the best financial decisions.</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
+          <h3 class="text-2xl font-bold text-purple-600 mb-4">User-Friendly Interface</h3>
+          <p class="text-gray-600">Our platform is designed to be intuitive and easy to use, making currency conversion a seamless experience.</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition">
+          <h3 class="text-2xl font-bold text-purple-600 mb-4">Reliable Data</h3>
+          <p class="text-gray-600">We source data from trusted providers to ensure accuracy and reliability for all your currency needs.</p>
+        </div>
+      </div>
+      <p class="max-w-3xl mx-auto text-gray-700 text-lg mt-8 leading-relaxed">
+        Whether you're a traveler, trader, or business owner, <span class="font-bold text-purple-600">CC Currency Converter</span> is here to simplify your currency management.
+      </p>
+    </section>
+
+    <section id="currencyDetails" class="mt-10 bg-gradient-to-r from-blue-50 via-blue-100 to-blue-50 px-6 py-8 rounded-xl shadow-lg">
+      <h2 class="text-3xl font-bold text-blue-700 mb-6 text-center">Currency Details</h2>
+      <div class="overflow-x-auto">
+        <table id="currencyTable" class="table-auto w-full border-collapse border border-gray-300 text-left bg-white rounded-lg shadow-md">
+          <thead class="bg-blue-200 text-blue-800">
+            <tr>
+              <th class="border border-gray-300 px-4 py-2 font-semibold">Currency</th>
+              <th class="border border-gray-300 px-4 py-2 font-semibold">Rate (to USD)</th>
+              <th class="border border-gray-300 px-4 py-2 font-semibold">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-6 text-center">
+        <button onclick="fetchCurrencyDetails()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 shadow-md transition-all">
+          Refresh
+        </button>
+        <p id="lastUpdated" class="text-gray-600 text-sm mt-2"></p>
+      </div>
+    </section>
+
+    <section id="help" class="mt-20 text-center bg-gradient-to-r from-green-50 via-green-100 to-green-50 px-6 py-10 rounded-xl shadow-lg">
+      <h2 class="text-4xl font-bold text-green-700 mb-6">Help & Support</h2>
+      <p class="max-w-3xl mx-auto text-gray-700 text-lg leading-relaxed">
+        Need assistance? We're here to help! Reach out to us through the following contact details:
+      </p>
+      <div class="mt-8">
+        <p class="text-lg text-gray-700 font-semibold">📞 Contact Number: <span class="text-green-600">7489635343</span></p>
+        <p class="text-lg text-gray-700 font-semibold mt-4">📧 Email: <a href="mailto:canuj546@gmail.com" class="text-green-600 underline">canuj546@gmail.com</a></p>
+      </div>
+    </section>
+
+  </main>
+
+  <button 
+    id="chat_toggle" 
+    class="fixed bottom-4 right-4 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition z-50"
+    onclick="toggleChatbot()"
+  >
+    💬
+  </button>
+
+  <div 
+    id="chatbot" 
+    class="fixed bottom-20 right-4 bg-blue-600 text-white p-4 rounded-2xl shadow-lg w-80 hidden z-50"
+  >
+    <h3 class="text-lg font-bold mb-2">💬 Chatbot</h3>
+    <div id="chatbox" class="bg-white text-black p-3 rounded-lg h-48 overflow-y-auto mb-3"></div>
+    <div class="flex space-x-2">
+      <input id="chat_input" type="text" placeholder="Ask something..." class="flex-1 px-3 py-2 border rounded-lg text-black" />
+      <button onclick="sendMessage()" class="bg-blue-500 px-4 py-2 rounded-lg hover:bg-blue-700 transition">Send</button>
+    </div>
+  </div>
+
+  <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden z-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+      <h2 class="text-2xl font-bold mb-4 text-center">Login</h2>
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <label for="loginEmail" class="block text-gray-700 font-semibold">Email:</label>
+          <input type="email" id="loginEmail" class="w-full px-4 py-2 border rounded-lg" required />
+        </div>
+        <div>
+          <label for="loginPassword" class="block text-gray-700 font-semibold">Password:</label>
+          <input type="password" id="loginPassword" class="w-full px-4 py-2 border rounded-lg" required />
+        </div>
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg">Login</button>
+      </form>
+      <button onclick="closeModal('loginModal')" class="mt-4 w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 rounded-lg">Close</button>
+    </div>
+  </div>
+
+  <div id="registerModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden z-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+      <h2 class="text-2xl font-bold mb-4 text-center">Register</h2>
+      <form id="registerForm" class="space-y-4">
+        <div>
+          <label for="registerName" class="block text-gray-700 font-semibold">Name:</label>
+          <input type="text" id="registerName" class="w-full px-4 py-2 border rounded-lg" required />
+        </div>
+        <div>
+          <label for="registerEmail" class="block text-gray-700 font-semibold">Email:</label>
+          <input type="email" id="registerEmail" class="w-full px-4 py-2 border rounded-lg" required />
+        </div>
+        <div>
+          <label for="registerPassword" class="block text-gray-700 font-semibold">Password:</label>
+          <input type="password" id="registerPassword" class="w-full px-4 py-2 border rounded-lg" required />
+        </div>
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded-lg">Register</button>
+      </form>
+      <button onclick="closeModal('registerModal')" class="mt-4 w-full bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 rounded-lg">Close</button>
+    </div>
+  </div>
+
   <script>
     const currencies = [
       "USD", "AED", "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN",
@@ -22,41 +285,33 @@
       "TWD", "TZS", "UAH", "UGX", "UYU", "UZS", "VES", "VND", "VUV", "WST", "XAF",
       "XCD", "XCG", "XDR", "XOF", "XPF", "YER", "ZAR", "ZMW", "ZWL"
     ];
-
     function populateCurrencyOptions() {
       const fromSelect = document.getElementById('from_currency');
       const toSelect = document.getElementById('to_currency');
-
       currencies.forEach(currency => {
         const option1 = document.createElement('option');
         option1.value = currency;
         option1.textContent = currency;
         fromSelect.appendChild(option1);
-
         const option2 = document.createElement('option');
         option2.value = currency;
         option2.textContent = currency;
         toSelect.appendChild(option2);
       });
     }
-
     async function convertCurrency() {
       const amount = parseFloat(document.getElementById('amount').value);
       const fromCurrency = document.getElementById('from_currency').value;
       const toCurrency = document.getElementById('to_currency').value;
-
       if (isNaN(amount) || fromCurrency === "" || toCurrency === "") {
         document.getElementById('result').innerText = "❌ Please fill all fields correctly.";
         return;
       }
-
       const apiKey = '14878b3a97fb881333bae8b4';
       const url = `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${fromCurrency}/${toCurrency}/${amount}`;
-
       try {
         const response = await fetch(url);
         const data = await response.json();
-
         if (data.result === "success") {
           document.getElementById('result').innerText = `✅ Converted Amount: ${data.conversion_result} ${toCurrency}`;
         } else {
@@ -67,50 +322,181 @@
         console.error(error);
       }
     }
+    function toggleChatbot() {
+      const chatbot = document.getElementById('chatbot');
+      chatbot.classList.toggle('hidden');
+    }
+    async function fetchCurrencyRate(baseCurrency, targetCurrency) {
+      const apiKey = '14878b3a97fb881333bae8b4';
+      const url = `https://v6.exchangerate-api.com/v6/${apiKey}/pair/${baseCurrency}/${targetCurrency}`;
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        if (data.result === "success") {
+          return `1 ${baseCurrency} = ${data.conversion_rate} ${targetCurrency}`;
+        } else {
+          return "Error: Unable to fetch currency rate.";
+        }
+      } catch (error) {
+        console.error(error);
+        return "Error: Unable to fetch currency rate.";
+      }
+    }
 
+    async function sendMessage() {
+      const input = document.getElementById('chat_input');
+      const chatbox = document.getElementById('chatbox');
+      const userMessage = input.value.trim();
+
+      if (userMessage !== "") {
+        const userBubble = document.createElement('div');
+        userBubble.className = 'text-right mb-2 bg-blue-100 text-blue-800 p-2 rounded-lg inline-block';
+        userBubble.innerText = `You: ${userMessage}`;
+        chatbox.appendChild(userBubble);
+
+        const botBubble = document.createElement('div');
+        botBubble.className = 'text-left mb-2 bg-gray-200 text-gray-800 p-2 rounded-lg inline-block';
+
+        if (userMessage.toLowerCase().includes("currency")) {
+          const [_, baseCurrency, targetCurrency] = userMessage.split(" ");
+          if (baseCurrency && targetCurrency) {
+            botBubble.innerText = "Bot: Fetching live currency rate...";
+            chatbox.appendChild(botBubble);
+            chatbox.scrollTop = chatbox.scrollHeight;
+
+            const rate = await fetchCurrencyRate(baseCurrency.toUpperCase(), targetCurrency.toUpperCase());
+            botBubble.innerText = `Bot: ${rate}`;
+          } else {
+            botBubble.innerText = "Bot: Please specify the currencies in the format 'currency USD EUR'.";
+          }
+        } else if (userMessage.toLowerCase().includes("hello")) {
+          botBubble.innerText = "Bot: Hello! How can I assist you today?";
+        } else if (userMessage.toLowerCase().includes("help")) {
+          botBubble.innerText = "Bot: Sure! Let me know what you need help with.";
+        } else {
+          botBubble.innerText = "Bot: I'm sorry, I didn't understand that. Can you please rephrase?";
+        }
+
+        chatbox.appendChild(botBubble);
+
+        chatbox.scrollTop = chatbox.scrollHeight;
+
+        input.value = '';
+      }
+    }
+
+    document.getElementById('chat_input').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
     window.onload = populateCurrencyOptions;
   </script>
-</head>
 
-<body 
-  class="relative min-h-screen flex items-center justify-center p-6 overflow-hidden"
-  style="background: url('https://cdn.pixabay.com/animation/2023/11/04/05/26/05-26-46-736_512.gif') no-repeat center center / cover;"
-  
->
+  <script>
+    function openModal(modalId) {
+      document.getElementById(modalId).classList.remove('hidden');
+    }
 
-  <!-- Light Blue Overlay -->
-  <div class="absolute inset-0 bg-blue-100 opacity-60 z-0"></div>
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.add('hidden');
+    }
 
-  <!-- Content -->
-  <div class="relative z-10 bg-blue-50 p-10 rounded-3xl shadow-2xl w-full max-w-2xl border-2 border-blue-300 hover:shadow-blue-400 hover:scale-105 transition-all duration-500">
-    <h1 class="text-5xl font-bold text-blue-600 text-center mb-10 drop-shadow-lg animate-pulse">💎 Currency Converter</h1>
+    document.addEventListener("DOMContentLoaded", () => {
+      const loginLink = document.querySelector('a[href="#login"]');
+      const registerLink = document.querySelector('a[href="#register"]');
+      const helpLink = document.querySelector('a[href="#help"]'); 
+      const converterLink = document.querySelector('a[href="#converter"]'); 
 
-    <form onsubmit="event.preventDefault(); convertCurrency();" class="space-y-6">
-      <div>
-        <label class="block text-blue-700 font-semibold mb-2">From Currency:</label>
-        <select id="from_currency" class="w-full px-4 py-3 border border-blue-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white hover:bg-blue-100 transition duration-300">
-          <option value="">Select Currency</option>
-        </select>
-      </div>
+      loginLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        openModal('loginModal');
+      });
 
-      <div>
-        <label class="block text-blue-700 font-semibold mb-2">To Currency:</label>
-        <select id="to_currency" class="w-full px-4 py-3 border border-blue-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white hover:bg-blue-100 transition duration-300">
-          <option value="">Select Currency</option>
-        </select>
-      </div>
+      registerLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        openModal('registerModal');
+      });
 
-      <div>
-        <label class="block text-blue-700 font-semibold mb-2">Amount:</label>
-        <input type="number" id="amount" step="any" placeholder="Enter amount" class="w-full px-4 py-3 border border-blue-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white hover:bg-blue-100 transition duration-300" />
-      </div>
+      helpLink.addEventListener("click", (e) => { 
+        e.preventDefault();
+        document.getElementById('help').scrollIntoView({ behavior: 'smooth' });
+      });
 
-      <div class="flex justify-center">
-        <input type="submit" value="Convert" class="bg-blue-500 text-white px-10 py-3 rounded-full hover:bg-blue-600 hover:scale-110 transition transform duration-300 shadow-md hover:shadow-xl" />
-      </div>
-    </form>
+      converterLink.addEventListener("click", (e) => { 
+        e.preventDefault();
+        document.getElementById('converter').scrollIntoView({ behavior: 'smooth' });
+      });
 
-    <h2 id="result" class="text-center mt-8 text-2xl font-semibold text-blue-800"></h2>
-  </div>
+      document.getElementById('loginForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        alert(`Logged in with Email: ${email}`);
+        closeModal('loginModal');
+      });
+
+      document.getElementById('registerForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('registerName').value;
+        const email = document.getElementById('registerEmail').value;
+        const password = document.getElementById('registerPassword').value;
+        alert(`Registered with Name: ${name}, Email: ${email}`);
+        closeModal('registerModal');
+      });
+    });
+
+    document.querySelector('a[href="#home"]').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.querySelector('a[href="#currencyDetails"]').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('currencyDetails').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
+
+  <script>
+    async function fetchCurrencyDetails() {
+      const apiKey = '14878b3a97fb881333bae8b4';
+      const url = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`;
+      const tableBody = document.querySelector('#currencyTable tbody');
+      const lastUpdated = document.getElementById('lastUpdated');
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.result === "success") {
+          tableBody.innerHTML = '';
+
+          const currenciesToShow = Object.entries(data.conversion_rates).slice(0, 5);
+
+          currenciesToShow.forEach(([currency, rate]) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td class="border border-gray-300 px-4 py-2">${currency}</td>
+              <td class="border border-gray-300 px-4 py-2">${rate.toFixed(4)}</td>
+              <td class="border border-gray-300 px-4 py-2">
+                <button class="bg-blue-600 text-white px-3 py-1 rounded">Send</button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+
+          lastUpdated.innerText = `Last updated: ${new Date(data.time_last_update_utc).toLocaleString()}`;
+        } else {
+          lastUpdated.innerText = "Error: Unable to fetch currency details.";
+        }
+      } catch (error) {
+        console.error(error);
+        lastUpdated.innerText = "Error: Unable to fetch currency details.";
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchCurrencyDetails);
+  </script>
+
 </body>
 </html>
